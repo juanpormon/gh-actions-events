@@ -3,9 +3,16 @@ on:
   push:
     branches:
       - main
+      - feat/*   # Covers everything except slashes
+      - test/**  # Covers everything including slashes feat/BB-23214/BB-231231
+    branches-ignore:
+      - dev**    # Ignores the dev branches
+    paths-ignore: 
+      - '.gitignore'            #Ignores changes in the gitignore
+      - '.github/workflows/*'   #Ignores changes in the workflows
   workflow_dispatch:
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Output event data
@@ -16,7 +23,17 @@ jobs:
         run: npm ci
       - name: Test code
         run: npm run test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
       - name: Build code
         run: npm run build
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy project
         run: echo "Deploying..."
