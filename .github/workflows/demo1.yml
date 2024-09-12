@@ -22,6 +22,7 @@ jobs:
       - name: Test code
         run: npm run test
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -30,7 +31,15 @@ jobs:
         run: npm ci
       - name: Build code
         run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-app
+          path: |
+            dist
+            package.json
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy project
