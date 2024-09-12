@@ -5,8 +5,6 @@ on:
       - main
       - feat/*   # Covers everything except slashes
       - test/**  # Covers everything including slashes feat/BB-23214/BB-231231
-    branches-ignore:
-      - dev**    # Ignores the dev branches
     paths-ignore: 
       - '.gitignore'            #Ignores changes in the gitignore
       - '.github/workflows/*'   #Ignores changes in the workflows
