@@ -17,6 +17,14 @@ jobs:
         run: echo "${{ toJSON(github.event) }}"
       - name: Get code
         uses: actions/checkout@v3
+      ## Cache works BEFORE the step we want to cache
+      ## The same cache is used in the whole workflow
+      - name: Dependencies Cache
+        uses: actions/cache@v3
+        with:
+          ## The hashfiles changes if the file changes, so it will be unique for each configuration
+          key: dependencies-cache-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
       - name: Install dependencies
         run: npm ci
       - name: Test code
@@ -33,6 +41,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Dependencies Cache
+        uses: actions/cache@v3
+        with:
+          key: dependencies-cache-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
       - name: Install dependencies
         run: npm ci
       - name: Build code
