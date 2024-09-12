@@ -24,6 +24,12 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      custom-output: ${{ steps.js-filename.outputs.name-of-the-step }}
+      #Steps
+      #Id
+      #What we want of that Id, in this case, the outputs
+      #As we defined the name-of-the-step as $GITHUB_OUTPUT, this will be the output of the id
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -31,6 +37,9 @@ jobs:
         run: npm ci
       - name: Build code
         run: npm run build
+      - name: Publish JS filename
+        id: js-filename
+        run: find dist/assets/*.js -type f -execdir echo 'name-of-the-step={}' >> $GITHUB_OUTPUT ';' # We are creating a variable called name-of-the-step, not related with the output, but then we assign the output to $GITHUB_OUTPUT
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
@@ -50,3 +59,5 @@ jobs:
           name: built-app
       - name: List artifacts
         run: ls -la
+      - name: Print output
+        run: echo "${{ needs.build.outputs.custom-output }}"
