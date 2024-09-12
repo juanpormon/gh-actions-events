@@ -7,7 +7,7 @@ on:
       - test/**  # Covers everything including slashes feat/BB-23214/BB-231231
     paths-ignore: 
       - '.gitignore'            #Ignores changes in the gitignore
-      - '.github/workflows/*'   #Ignores changes in the workflows
+#      - '.github/workflows/*'   #Ignores changes in the workflows
   workflow_dispatch:
 jobs:
   test:
