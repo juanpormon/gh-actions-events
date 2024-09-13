@@ -31,7 +31,7 @@ jobs:
         id: testing-process
         run: npm run test
       - name: Upload test report
-        if: ${{ steps.testing-process.outcome.failed }}
+        if: ${{ steps.testing-process.outcome == 'failure' }}
         uses: actions/upload-artifact@v3
         with: 
           name: test-report
