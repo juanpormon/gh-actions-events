@@ -31,7 +31,9 @@ jobs:
         id: testing-process
         run: npm run test
       - name: Upload test report
-        if: ${{ steps.testing-process.outcome == 'failure' }}
+        if: failure() && ${{ steps.testing-process.outcome == 'failure' }} 
+        ## We need the failure function in the if condition to allow the previous step to failure and keep working
+        ## Is one of the 4 special functions on the if statement in github actions
         uses: actions/upload-artifact@v3
         with: 
           name: test-report
@@ -98,3 +100,15 @@ jobs:
         run: ls -la
       - name: Print output
         run: echo "${{ needs.build.outputs.custom-output }}"
+  
+  report: 
+    ## Only will be excecuted if other job fails
+    needs: [lint, deploy]
+    ## Lint and deploy will contain all other jobs failing, lint as is independent and deploy contains all the others
+    if: failure()
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Report if something went wrong
+        run: |
+          echo "something went wrong"
+          echo ${{ toJson(github) }}
