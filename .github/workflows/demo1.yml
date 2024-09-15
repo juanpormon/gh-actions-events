@@ -20,12 +20,14 @@ jobs:
       ## Cache works BEFORE the step we want to cache
       ## The same cache is used in the whole workflow
       - name: Dependencies Cache
+        id: cache
         uses: actions/cache@v3
         with:
           ## The hashfiles changes if the file changes, so it will be unique for each configuration
           key: dependencies-cache-${{ hashFiles('**/package-lock.json') }}
-          path: ~/.npm
+          path: node_modules
       - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit == 'false'}}
         run: npm ci
       - name: Test code
         id: testing-process
@@ -45,11 +47,13 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Dependencies Cache
+        id: cache
         uses: actions/cache@v3
         with:
           key: dependencies-cache-${{ hashFiles('**/package-lock.json') }}
-          path: ~/.npm
+          path: node_modules
       - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit == 'false'}}
         run: npm ci
       - name: Lint code
         run: npm run lint
@@ -67,11 +71,13 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Dependencies Cache
+        id: cache
         uses: actions/cache@v3
         with:
           key: dependencies-cache-${{ hashFiles('**/package-lock.json') }}
-          path: ~/.npm
+          path: node_modules
       - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit == 'false'}}
         run: npm ci
       - name: Build code
         run: npm run build
