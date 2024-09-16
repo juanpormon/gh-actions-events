@@ -2,7 +2,7 @@ name: reusable deploy
 on: 
   workflow_call:
     inputs:
-      arfifact-name: 
+      artifact-name: 
         description: The name of the deployable artifact files
         required: true
         type: string
@@ -15,6 +15,6 @@ jobs:
       - name: get-code
         uses: actions/download-artifact@v3
         with: 
-          name: ${{ inputs.arfifact-name }}
+          name: ${{ inputs.artifact-name }}
       - name: reusable workflow
         run: echo "deploying reusable workflow"
