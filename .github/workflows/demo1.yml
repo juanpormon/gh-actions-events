@@ -95,6 +95,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    outputs: 
+      result:
+        ${{ steps.output-result-id.outputs.step-result}}
     steps:
       - name: Deploy
         run: echo "Deploying app..."
@@ -106,6 +109,9 @@ jobs:
         run: ls -la
       - name: Print output
         run: echo "${{ needs.build.outputs.custom-output }}"
+      - name: Set output result
+        id: output-result-id
+        run: echo "step-result=sucess" >> $GITHUB_OUTPUT
   
   deploy-reusable:
     needs: build

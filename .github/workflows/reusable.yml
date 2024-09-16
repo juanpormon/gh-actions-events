@@ -10,6 +10,10 @@ on:
     secrets:
       some-secret:
           required: false
+    outputs: 
+      result: 
+        description: The result of the operation
+        value: ${{ jobs.deploy.result }}
 
 jobs:
   deploy: 
