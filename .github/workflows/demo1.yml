@@ -107,6 +107,10 @@ jobs:
       - name: Print output
         run: echo "${{ needs.build.outputs.custom-output }}"
   
+  deploy-reusable:
+    needs: deploy
+    uses: ./.github/workflows/reusable.yml
+  
   report: 
     ## Only will be excecuted if other job fails
     needs: [lint, deploy]
