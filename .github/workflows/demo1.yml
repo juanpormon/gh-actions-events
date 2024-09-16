@@ -112,6 +112,8 @@ jobs:
     uses: ./.github/workflows/reusable.yml
     with: 
       artifact-name: built-app
+    secrets: 
+      some-secret: super-secret-value
   
   report: 
     ## Only will be excecuted if other job fails
